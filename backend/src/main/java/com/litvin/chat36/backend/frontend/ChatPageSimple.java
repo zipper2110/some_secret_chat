@@ -2,6 +2,7 @@ package com.litvin.chat36.backend.frontend;
 
 import com.litvin.chat36.backend.message.MessagesService;
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.KeyModifier;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.Icon;
@@ -33,7 +34,7 @@ public class ChatPageSimple extends VerticalLayout {
         setAlignItems(Alignment.CENTER);
 
         VerticalLayout content = new VerticalLayout();
-        content.setWidth("800px");
+        content.getStyle().set("max-width", "800px");
         content.setHeightFull();
 
         // 1st part - nickname input ------------------------
@@ -68,11 +69,16 @@ public class ChatPageSimple extends VerticalLayout {
             Notification.show("message was sent!");
             draw();
         });
-        sendButton.addClickShortcut(Key.ENTER);
+        sendButton.addClickShortcut(Key.ENTER, KeyModifier.CONTROL);
+
+        Button refreshButton = new Button(new Icon(VaadinIcon.REFRESH), event -> {
+            nick = nicknameField.getValue();
+            draw();
+        });
 
         HorizontalLayout newMessageLayout = new HorizontalLayout();
         newMessageLayout.setWidthFull();
-        newMessageLayout.add(messageInput, sendButton);
+        newMessageLayout.add(messageInput, refreshButton, sendButton);
         newMessageLayout.setFlexGrow(2, messageInput);
 
         content.add(
